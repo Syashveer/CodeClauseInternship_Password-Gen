@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generated</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        input[type="number"], button {
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #password {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            font-size: 18px;
+        }
+        #copyButton {
+            margin-top: 10px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #copyButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Password Generator</h1>
+        <input type="number" id="length" name="length" min="6" max="20" placeholder="Password Length" required><br>
+        
+        <input type="checkbox" id="numbers" name="numbers">
+        <label for="numbers">Include Numbers</label><br>
+        
+        <input type="checkbox" id="symbols" name="symbols">
+        <label for="symbols">Include Symbols</label><br>
+        
+        <button id="generateButton">Generate Password</button>
+        
+        <div id="password"></div>
+        <button id="copyButton" onclick="copyPassword()">Copy Password</button>
+    </div>
+    
+    <script>
+        function copyPassword() {
+            var passwordField = document.getElementById("password");
+            var passwordText = passwordField.textContent || passwordField.innerText;
+            var tempInput = document.createElement("input");
+            tempInput.value = passwordText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            alert("Password copied to clipboard!");
+        }
+        
+        document.getElementById("generateButton").addEventListener("click", function() {
+            var length = document.getElementById("length").value;
+            var includeNumbers = document.getElementById("numbers").checked;
+            var includeSymbols = document.getElementById("symbols").checked;
+            
+            var password = generatePassword(length, includeNumbers, includeSymbols);
+            document.getElementById("password").innerText = password;
+        });
+
+        function generatePassword(length, includeNumbers, includeSymbols) {
+            var characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (includeNumbers) characters += "0123456789";
+            if (includeSymbols) characters += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+            
+            var password = "";
+            for (var i = 0; i < length; i++) {
+                password += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return password;
+        }
+    </script>
+</body>
+</html>
